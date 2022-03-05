@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/country")
+@RequestMapping("api/country")
 public class CountryController {
 
     CountryService service;
@@ -34,12 +34,12 @@ public class CountryController {
     }
 
     @PutMapping
-    public Country putCountry(@RequestBody Country country){
+    public Country insertCountry(@RequestBody Country country){
         return service.saveCountry(country);
     }
 
     @PostMapping
-    public Country postCountry(@RequestBody Country country){ return service.updateCountry(country); }
+    public Country updateCountry(@RequestBody Country country){ return service.updateCountry(country); }
 
     @DeleteMapping("{id}")
     public boolean deleteCountryById(@PathVariable int id){ return service.deleteCountry(id); }

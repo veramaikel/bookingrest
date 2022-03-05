@@ -1,7 +1,7 @@
 package com.bookingrest.service;
 
-import com.bookingrest.model.Country;
-import com.bookingrest.repository.CountryRepository;
+import com.bookingrest.model.RoomType;
+import com.bookingrest.repository.RoomTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,48 +12,48 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class CountryService {
+public class RoomTypeService {
 
-    CountryRepository repository;
+    RoomTypeRepository repository;
     Sort defaultSort;
 
     @Autowired
-    public CountryService(CountryRepository repository) {
+    public RoomTypeService(RoomTypeRepository repository) {
         this.repository = repository;
         defaultSort = Sort.by("name");
     }
 
-    public List<Country> findAllCountries(Pageable pageable){
+    public List<RoomType> findAllTypes(Pageable pageable){
         return repository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), defaultSort))
                 .getContent();
     }
 
-    public List<Country> findAllCountriesByName(String name, Pageable pageable){
+    public List<RoomType> findAllTypesByName(String name, Pageable pageable){
         return repository.findAllByNameContains(name,
                         PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), defaultSort))
                                 .getContent();
     }
 
-    public Country findCountryById(int id){
+    public RoomType findTypeById(int id){
         return repository.findById(id);
     }
 
-    public Country findCountryByName(String name){
+    public RoomType findTypeByName(String name){
         return repository.findByName(name);
     }
 
     @Transactional
-    public Country saveCountry(Country country){
-        return repository.save(country);
+    public RoomType saveType(RoomType type){
+        return repository.save(type);
     }
 
     @Transactional
-    public Country updateCountry(Country country){
-        return repository.save(country);
+    public RoomType updateType(RoomType type){
+        return repository.save(type);
     }
 
     @Transactional
-    public boolean deleteCountry(int id) {
+    public boolean deleteType(int id) {
         try{
             repository.deleteById(id);
             return true;
@@ -63,10 +63,10 @@ public class CountryService {
     }
 
     @Transactional
-    public boolean deleteCountry(String name) {
+    public boolean deleteType(String name) {
         try{
-            Country country = repository.findByName(name);
-            repository.delete(country);
+            RoomType type = repository.findByName(name);
+            repository.delete(type);
             return true;
         }catch (Exception e){
             return false;

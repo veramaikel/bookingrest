@@ -1,10 +1,10 @@
 package com.bookingrest.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,22 +18,31 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column
-    private int number;
-    @Column
-    private int floor;
-    @Column
-    private int capacity;
+    private Integer id;
+
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    private int number;
+
+    @Column(nullable = false)
+    private int floor;
+
+    @Column(nullable = false)
+    private int capacity;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="type_id", nullable=false)
     private RoomType type;
-    @Column(precision = 6, scale = 2)
+
+    @Column(precision = 6, scale = 2, nullable = false)
     private BigDecimal price;
 
     @OneToMany(mappedBy = "room")
-    Set<Reservation> reservations;
+    @JsonIgnoreProperties(value = "room")
+    private Set<Reservation> reservations;
 }
