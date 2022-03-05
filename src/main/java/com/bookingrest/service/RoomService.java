@@ -83,12 +83,8 @@ public class RoomService {
                 .getContent();
     }
 
-    public Room findRoomById(int id){
-        return repository.findById(id);
-    }
-
-    public Room findRoomByNumberAndFloor(int number, int floor){
-        return repository.findByNumberAndFloor(number, floor);
+    public Room findRoomByNumber(Integer number){
+        return repository.findByNumber(number);
     }
 
     @Transactional
@@ -111,20 +107,9 @@ public class RoomService {
     }
 
     @Transactional
-    public boolean deleteRoom(int id) {
+    public boolean deleteRoom(Integer number) {
         try{
-            repository.deleteById(id);
-            return true;
-        }catch (Exception e){
-            return false;
-        }
-    }
-
-    @Transactional
-    public boolean deleteRoom(int number, int floor) {
-        try{
-            Room room = repository.findByNumberAndFloor(number, floor);
-            repository.delete(room);
+            repository.deleteById(number);
             return true;
         }catch (Exception e){
             return false;

@@ -50,13 +50,8 @@ public class RoomController {
         return service.findAllFreeRoomsByRange(date1, date2, pageable);
     }
 
-    @GetMapping("{id}")
-    public Room getRoomById(@PathVariable int id){ return service.findRoomById(id); }
-
-    @GetMapping("{number}/{floor}")
-    public Room getRoomByNumberAndFloor(@PathVariable int number, @PathVariable int floor){
-        return service.findRoomByNumberAndFloor(number, floor);
-    }
+    @GetMapping("{number}")
+    public Room getRoomById(@PathVariable Integer number){ return service.findRoomByNumber(number); }
 
     @GetMapping("floor/{floor}")
     public List<Room> getRoomsByFloor(@PathVariable int floor, Pageable pageable){
@@ -81,11 +76,7 @@ public class RoomController {
     @PostMapping(consumes = {"application/xml","application/json"})
     public Room updateRoom(@RequestBody Room room){ return service.updateRoom(room); }
 
-    @DeleteMapping("{id}")
-    public boolean deleteRoomById(@PathVariable int id){ return service.deleteRoom(id); }
+    @DeleteMapping("{number}")
+    public boolean deleteRoomById(@PathVariable Integer number){ return service.deleteRoom(number); }
 
-    @DeleteMapping("{number}/{floor}")
-    public boolean deleteRoomByNumberAndFloor(@PathVariable int number, @PathVariable int floor){
-        return service.deleteRoom(number, floor);
-    }
 }

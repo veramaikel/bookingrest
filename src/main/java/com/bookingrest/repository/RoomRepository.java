@@ -37,7 +37,5 @@ public interface RoomRepository extends PagingAndSortingRepository<Room, Integer
     @Query("select r from Room r join r.reservations v")
     Page<Room> getAllReservedRooms(Pageable pageable);
 
-    Room findById(int id);
-
-    Room findByNumberAndFloor(int number, int floor);
+    Room findByNumber(Integer number);
 }

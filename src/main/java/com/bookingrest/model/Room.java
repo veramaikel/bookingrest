@@ -12,22 +12,16 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
-@Table(name="Room", uniqueConstraints={ @UniqueConstraint(
-        name = "roomUniqueIndex", columnNames = {"number", "floor"})} )
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+        property = "number")
 public class Room implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(nullable = false)
-    private int number;
+    private Integer number;
 
     @Column(nullable = false)
     private int floor;

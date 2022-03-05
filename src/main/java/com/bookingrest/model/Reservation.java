@@ -17,7 +17,7 @@ import java.util.Date;
 @Entity
 @Table(name="Reservation",
         uniqueConstraints={@UniqueConstraint(
-                name = "reservationUniqueIndex", columnNames = {"checkin", "guest_id", "room_id"}) })
+                name = "reservationUniqueIndex", columnNames = {"checkin", "guest_id", "room_number"}) })
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -51,7 +51,7 @@ public class Reservation implements Serializable {
     private Guest guest;
 
     @ManyToOne
-    @JoinColumn(name="room_id", nullable=false)
-    @JsonIgnoreProperties(value = {"reservations", "id"})
+    @JoinColumn(name="room_number", nullable=false)
+    @JsonIgnoreProperties(value = "reservations")
     private Room room;
 }
