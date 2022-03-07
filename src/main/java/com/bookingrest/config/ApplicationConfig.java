@@ -19,7 +19,7 @@ public class ApplicationConfig {
 
     @Bean
     public DataSource getDataSource() throws IOException {
-        FileInputStream propertiesInput = new FileInputStream("..\\sql.properties");
+        FileInputStream propertiesInput = new FileInputStream("../sql.properties");
 
         Properties props = new Properties();
         props.load(propertiesInput);
