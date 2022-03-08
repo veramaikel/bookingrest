@@ -21,21 +21,18 @@ public interface RoomRepository extends PagingAndSortingRepository<Room, Integer
 
     Page<Room> findAllByType(RoomType type, Pageable pageable);
 
-    //@Query("select r from Room r join r.reservations v where v.checkin > ?1 or (v.checkin < ?1 and v.checkout < ?1)")
-    //Page<Room> getFreeRooms(Date date, Pageable pageable);
-
-    @Query("select r from Room r left join r.reservations v "
-            +" where (v.checkin >= ?1 and v.checkin <= ?2) or "
-            +" (v.checkin < ?1 and (v.checkout = null or v.checkout <= ?2))")
+    @Query("select r from Room r where r not in ( " +
+            " select b.room from Booking b where ( b.checkin >= ?1 and b.checkin <= ?2 ) or "
+            +" ( b.checkin < ?1 and ( b.checkout = null or b.checkout <= ?2 ) ) )")
     Page<Room> getFreeRoomsByRange(Date min, Date max, Pageable pageable);
 
-    @Query("select r from Room r join r.reservations v"
-            +" where (v.checkin >= ?1 and v.checkin <= ?2) or "
-            +" (v.checkin < ?1 and (v.checkout = null or v.checkout <= ?2))")
-    Page<Room> getReservedRoomsByRange(Date min, Date max, Pageable pageable);
+    @Query("select r from Room r join r.bookings b"
+            +" where ( b.checkin >= ?1 and b.checkin <= ?2 ) or "
+            +" ( b.checkin < ?1 and ( b.checkout = null or b.checkout <= ?2 ) )")
+    Page<Room> getBookedRoomsByRange(Date min, Date max, Pageable pageable);
 
-    @Query("select r from Room r join r.reservations v")
-    Page<Room> getAllReservedRooms(Pageable pageable);
+    @Query("select r from Room r join r.bookings b")
+    Page<Room> getAllBookedRooms(Pageable pageable);
 
-    Room findByNumber(Integer number);
+    Room findByNumber(int number);
 }

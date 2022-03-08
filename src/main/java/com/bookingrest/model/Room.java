@@ -38,5 +38,5 @@ public class Room implements Serializable {
 
     @OneToMany(mappedBy = "room")
     @JsonIgnoreProperties(value = "room")
-    private Set<Reservation> reservations;
+    private Set<Booking> bookings;
 }

@@ -25,20 +25,23 @@ public class RoomController {
         return service.findAllRooms(pageable);
     }
 
-    @GetMapping("all/reserved")
-    public List<Room> getAllReservedRooms(Pageable pageable){
-        return service.findAllReservedRooms(pageable);
+    @GetMapping("all/booked")
+    public List<Room> getAllBookedRooms(Pageable pageable){
+        return service.findAllBookedRooms(pageable);
     }
 
-    @GetMapping("all/reserved/{date}")
-    public List<Room> getReservedRoomsByDate(@PathVariable Date date, Pageable pageable){
-        return service.findAllReservedRoomsByDate(date, pageable);
+    @GetMapping("all/booked/{date}")
+    public List<Room> getBookedRoomsByDate(@PathVariable Date date, Pageable pageable){
+        return service.findAllBookedRoomsByDate(date, pageable);
     }
 
-    @GetMapping("all/reserved/{date1}/{date2}")
-    public List<Room> getReservedRoomsByRange(@PathVariable Date date1, @PathVariable Date date2, Pageable pageable){
-        return service.findAllReservedRoomsByRange(date1, date2, pageable);
+    @GetMapping("all/booked/{date1}/{date2}")
+    public List<Room> getBookedRoomsByRange(@PathVariable Date date1, @PathVariable Date date2, Pageable pageable){
+        return service.findAllBookedRoomsByRange(date1, date2, pageable);
     }
+
+    @GetMapping("all/free")
+    public List<Room> getFreeRooms(Pageable pageable){ return service.findAllFreeRooms(pageable); }
 
     @GetMapping("all/free/{date}")
     public List<Room> getFreeRoomsByDate(@PathVariable Date date, Pageable pageable){
@@ -51,7 +54,7 @@ public class RoomController {
     }
 
     @GetMapping("{number}")
-    public Room getRoomById(@PathVariable Integer number){ return service.findRoomByNumber(number); }
+    public Room getRoomByNumber(@PathVariable int number){ return service.findRoomByNumber(number); }
 
     @GetMapping("floor/{floor}")
     public List<Room> getRoomsByFloor(@PathVariable int floor, Pageable pageable){
@@ -63,9 +66,9 @@ public class RoomController {
         return service.findAllRoomsByCapacity(capacity, pageable);
     }
 
-    @GetMapping("type/{typeId}")
-    public List<Room> getRoomsByType(@PathVariable int typeId, Pageable pageable){
-        return service.findAllRoomsByType(typeId, pageable);
+    @GetMapping("type/{id}")
+    public List<Room> getRoomsByType(@PathVariable int id, Pageable pageable){
+        return service.findAllRoomsByType(id, pageable);
     }
 
     @PutMapping(consumes = {"application/xml","application/json"})
@@ -77,6 +80,6 @@ public class RoomController {
     public Room updateRoom(@RequestBody Room room){ return service.updateRoom(room); }
 
     @DeleteMapping("{number}")
-    public boolean deleteRoomById(@PathVariable Integer number){ return service.deleteRoom(number); }
+    public boolean deleteRoomByNumber(@PathVariable int number){ return service.deleteRoom(number); }
 
 }

@@ -34,5 +34,5 @@ public class Guest implements Serializable {
 
     @OneToMany(mappedBy = "guest")
     @JsonIgnoreProperties(value = "guest")
-    private Set<Reservation> reservations;
+    private Set<Booking> bookings;
 }

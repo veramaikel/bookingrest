@@ -53,7 +53,7 @@ public class CountryService {
     }
 
     @Transactional
-    public boolean deleteCountry(int id) {
+    public boolean deleteCountry(Integer id) {
         try{
             repository.deleteById(id);
             return true;

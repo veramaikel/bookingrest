@@ -5,6 +5,8 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 
 import javax.sql.DataSource;
 import java.io.FileInputStream;
@@ -30,5 +32,12 @@ public class ApplicationConfig {
         dataSourceBuilder.username((String)props.get("username"));
         dataSourceBuilder.password((String)props.get("password"));
         return dataSourceBuilder.build();
+    }
+
+    @Bean
+    public PageableHandlerMethodArgumentResolverCustomizer pageableResolverCustomizer() {
+
+        return resolver -> resolver.setFallbackPageable(PageRequest.of(0,
+                Integer.parseInt(env.getProperty("spring.data.pageable.default-page-size"))));
     }
 }
