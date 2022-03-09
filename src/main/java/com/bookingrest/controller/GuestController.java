@@ -52,10 +52,10 @@ public class GuestController {
     }
 
     @GetMapping("{id}")
-    public Guest getGuestById(@PathVariable int id){ return service.findGuestById(id); }
+    public Guest getGuestById(@PathVariable int id){ return service.findByGuestId(id); }
 
     @GetMapping("name/{name}")
-    public Guest getGuestByName(@PathVariable String name){ return service.findGuestByName(name); }
+    public Guest getGuestByName(@PathVariable String name){ return service.findByGuestName(name); }
 
     @PutMapping(consumes = {"application/xml","application/json"})
     public Guest insertGuest(@RequestBody Guest guest){

@@ -47,12 +47,12 @@ public class BookingService {
     }
 
     public List<Booking> findAllBookingsByRoom(int number, Pageable pageable){
-        return repository.findAllByRoom(roomServ.findRoomByNumber(number),
+        return repository.findAllByRoom(roomServ.findByRoomNumber(number),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Booking> findAllBookingsByGuest(int id, Pageable pageable){
-        return repository.findAllByGuest(guestServ.findGuestById(id),
+        return repository.findAllByGuest(guestServ.findByGuestId(id),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
@@ -66,7 +66,7 @@ public class BookingService {
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public Booking findBookingById(int id){
+    public Booking findByBookingId(int id){
         return repository.findById(id);
     }
 
@@ -83,12 +83,12 @@ public class BookingService {
     private Booking setPersistent(Booking booking){
         Room room = booking.getRoom();
         if(room.getNumber()!=null) {
-            room = roomServ.findRoomByNumber(room.getNumber());
+            room = roomServ.findByRoomNumber(room.getNumber());
             booking.setRoom(room);
         }
         Guest guest = booking.getGuest();
         if(guest.getId()!=null) {
-            guest = guestServ.findGuestById(guest.getId());
+            guest = guestServ.findByGuestId(guest.getId());
             booking.setGuest(guest);
         }
 

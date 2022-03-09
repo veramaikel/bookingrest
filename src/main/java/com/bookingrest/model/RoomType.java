@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +16,6 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -32,4 +30,12 @@ public class RoomType implements Serializable {
     @OneToMany(mappedBy="type")
     @JsonIgnore
     private Set<Room> rooms;
+
+    @Override
+    public String toString() {
+        return "RoomType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -24,15 +24,15 @@ public interface RoomRepository extends PagingAndSortingRepository<Room, Integer
     @Query("select r from Room r where r not in ( " +
             " select b.room from Booking b where ( b.checkin >= ?1 and b.checkin <= ?2 ) or "
             +" ( b.checkin < ?1 and ( b.checkout = null or b.checkout <= ?2 ) ) )")
-    Page<Room> getFreeRoomsByRange(Date min, Date max, Pageable pageable);
+    Page<Room> findAllFreeRoomsByRange(Date min, Date max, Pageable pageable);
 
     @Query("select r from Room r join r.bookings b"
             +" where ( b.checkin >= ?1 and b.checkin <= ?2 ) or "
             +" ( b.checkin < ?1 and ( b.checkout = null or b.checkout <= ?2 ) )")
-    Page<Room> getBookedRoomsByRange(Date min, Date max, Pageable pageable);
+    Page<Room> findAllBookedRoomsByRange(Date min, Date max, Pageable pageable);
 
     @Query("select r from Room r join r.bookings b")
-    Page<Room> getAllBookedRooms(Pageable pageable);
+    Page<Room> findAllBookedRooms(Pageable pageable);
 
     Room findByNumber(int number);
 }

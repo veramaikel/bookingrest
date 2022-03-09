@@ -40,41 +40,41 @@ public class RoomService {
     }
 
     public List<Room> findAllRoomsByType(int typeId, Pageable pageable){
-        return repository.findAllByType(service.findTypeById(typeId),
+        return repository.findAllByType(service.findByTypeId(typeId),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Room> findAllBookedRooms(Pageable pageable){
-        return repository.getAllBookedRooms(BookingUtil.getPageable(pageable, defaultSort)).getContent();
+        return repository.findAllBookedRooms(BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Room> findAllBookedRoomsByDate(Date date, Pageable pageable){
-        return repository.getBookedRoomsByRange(date, date,
+        return repository.findAllBookedRoomsByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Room> findAllBookedRoomsByRange(Date date1, Date date2, Pageable pageable){
-        return repository.getBookedRoomsByRange(
+        return repository.findAllBookedRoomsByRange(
                 BookingUtil.newer(date1, date2), BookingUtil.older(date1, date2),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Room> findAllFreeRooms(Pageable pageable){
         Date date = new Date(System.currentTimeMillis());
-        return repository.getFreeRoomsByRange(date, date, BookingUtil.getPageable(pageable, defaultSort)).getContent();
+        return repository.findAllFreeRoomsByRange(date, date, BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Room> findAllFreeRoomsByDate(Date date, Pageable pageable){
-        return repository.getFreeRoomsByRange(date, date, BookingUtil.getPageable(pageable, defaultSort)).getContent();
+        return repository.findAllFreeRoomsByRange(date, date, BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Room> findAllFreeRoomsByRange(Date date1, Date date2, Pageable pageable){
-        return repository.getFreeRoomsByRange(
+        return repository.findAllFreeRoomsByRange(
                 BookingUtil.newer(date1, date2), BookingUtil.older(date1, date2),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public Room findRoomByNumber(int number){
+    public Room findByRoomNumber(int number){
         return repository.findByNumber(number);
     }
 
@@ -91,7 +91,7 @@ public class RoomService {
     private Room setPersistent(Room room){
         RoomType type = room.getType();
         if(type.getId()!=null) {
-            type = service.findTypeById(type.getId());
+            type = service.findByTypeId(type.getId());
             room.setType(type);
         }
         return room;

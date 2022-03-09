@@ -22,10 +22,10 @@ public interface GuestRepository extends PagingAndSortingRepository<Guest, Integ
     @Query("select g from Guest g join g.bookings b"
             +" where (b.checkin >= ?1 and b.checkin <= ?2) or "
             +" (b.checkin < ?1 and (b.checkout = null or b.checkout <= ?2))")
-    Page<Guest> getHaveBookedByRange(Date min, Date max, Pageable pageable);
+    Page<Guest> findAllHaveBookedByRange(Date min, Date max, Pageable pageable);
 
     @Query("select g from Guest g join g.bookings b")
-    Page<Guest> getAllHaveBooked(Pageable pageable);
+    Page<Guest> findAllHaveBooked(Pageable pageable);
 
     Guest findById(int id);
 

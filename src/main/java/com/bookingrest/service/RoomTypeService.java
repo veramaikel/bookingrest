@@ -34,11 +34,11 @@ public class RoomTypeService {
                                 .getContent();
     }
 
-    public RoomType findTypeById(int id){
+    public RoomType findByTypeId(int id){
         return repository.findById(id);
     }
 
-    public RoomType findTypeByName(String name){
+    public RoomType findByTypeName(String name){
         return repository.findByName(name);
     }
 

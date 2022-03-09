@@ -34,11 +34,11 @@ public class CountryService {
                                 .getContent();
     }
 
-    public Country findCountryById(int id){
+    public Country findByCountryId(int id){
         return repository.findById(id);
     }
 
-    public Country findCountryByName(String name){
+    public Country findByCountryName(String name){
         return repository.findByName(name);
     }
 
@@ -53,7 +53,7 @@ public class CountryService {
     }
 
     @Transactional
-    public boolean deleteCountry(Integer id) {
+    public boolean deleteCountry(int id) {
         try{
             repository.deleteById(id);
             return true;

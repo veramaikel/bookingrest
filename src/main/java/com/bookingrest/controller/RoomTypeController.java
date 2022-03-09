@@ -23,10 +23,10 @@ public class RoomTypeController {
     }
 
     @GetMapping("{id}")
-    public RoomType getTypeById(@PathVariable int id){ return service.findTypeById(id); }
+    public RoomType getTypeById(@PathVariable int id){ return service.findByTypeId(id); }
 
     @GetMapping("name/{name}")
-    public RoomType getTypeByName(@PathVariable String name){ return service.findTypeByName(name); }
+    public RoomType getTypeByName(@PathVariable String name){ return service.findByTypeName(name); }
 
     @GetMapping("all/{name}")
     public List<RoomType> getTypesByName(@PathVariable String name, Pageable pageable){
@@ -34,12 +34,12 @@ public class RoomTypeController {
     }
 
     @PutMapping
-    public RoomType insertCountry(@RequestBody RoomType type){
+    public RoomType insertType(@RequestBody RoomType type){
         return service.saveType(type);
     }
 
     @PostMapping
-    public RoomType updateCountry(@RequestBody RoomType type){ return service.updateType(type); }
+    public RoomType updateType(@RequestBody RoomType type){ return service.updateType(type); }
 
     @DeleteMapping("{id}")
     public boolean deleteTypeById(@PathVariable int id){ return service.deleteType(id); }

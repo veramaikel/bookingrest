@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -22,7 +21,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @ValidBooking
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -71,5 +69,19 @@ public class Booking implements Serializable {
         } else {
             return (int) ((checkout.getTime() - checkin.getTime()) / 1000 / 60 / 60 / 24);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", checkin=" + checkin +
+                ", checkout=" + checkout +
+                ", people=" + people +
+                ", guest=" + guest +
+                ", room=" + room +
+                ", total=" + getTotal() +
+                ", nights=" + getNights() +
+                '}';
     }
 }

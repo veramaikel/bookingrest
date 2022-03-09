@@ -36,30 +36,30 @@ public class GuestService {
     }
 
     public List<Guest> findAllGuestsByCountry(int countryId, Pageable pageable){
-        return repository.findAllByCountry(service.findCountryById(countryId),
+        return repository.findAllByCountry(service.findByCountryId(countryId),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Guest> findAllGuestsHaveBooked(Pageable pageable){
-        return repository.getAllHaveBooked(BookingUtil.getPageable(pageable, defaultSort)).getContent();
+        return repository.findAllHaveBooked(BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Guest> findAllGuestsHaveBookedByDate(Date date, Pageable pageable){
-        return repository.getHaveBookedByRange(date, date,
+        return repository.findAllHaveBookedByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Guest> findAllGuestsHaveBookedByRange(Date date1, Date date2, Pageable pageable){
-        return repository.getHaveBookedByRange(
+        return repository.findAllHaveBookedByRange(
                 BookingUtil.newer(date1, date2), BookingUtil.older(date1, date2),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public Guest findGuestById(int id){
+    public Guest findByGuestId(int id){
         return repository.findById(id);
     }
 
-    public Guest findGuestByName(String name){
+    public Guest findByGuestName(String name){
         return repository.findByName(name);
     }
 
@@ -76,7 +76,7 @@ public class GuestService {
     private Guest setPersistent(Guest guest){
         Country country = guest.getCountry();
         if(country.getId()!=null) {
-            country = service.findCountryById(country.getId());
+            country = service.findByCountryId(country.getId());
             guest.setCountry(country);
         }
         return guest;

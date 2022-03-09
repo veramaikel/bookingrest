@@ -61,7 +61,7 @@ public class BookingController {
     }
 
     @GetMapping("{id}")
-    public Booking getBookingById(@PathVariable int id){ return service.findBookingById(id); }
+    public Booking getBookingById(@PathVariable int id){ return service.findByBookingId(id); }
 
     @PutMapping(consumes = {"application/xml","application/json"})
     public Booking insertBooking(@RequestBody Booking booking){

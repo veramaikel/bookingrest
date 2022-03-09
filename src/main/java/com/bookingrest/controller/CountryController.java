@@ -23,10 +23,10 @@ public class CountryController {
     }
 
     @GetMapping("{id}")
-    public Country getCountryById(@PathVariable int id){ return service.findCountryById(id); }
+    public Country getCountryById(@PathVariable int id){ return service.findByCountryId(id); }
 
     @GetMapping("name/{name}")
-    public Country getCountryByName(@PathVariable String name){ return service.findCountryByName(name); }
+    public Country getCountryByName(@PathVariable String name){ return service.findByCountryName(name); }
 
     @GetMapping("all/{name}")
     public List<Country> getCountriesByName(@PathVariable String name, Pageable pageable){

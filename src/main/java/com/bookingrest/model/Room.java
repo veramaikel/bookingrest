@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +14,6 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "number")
@@ -39,4 +37,15 @@ public class Room implements Serializable {
     @OneToMany(mappedBy = "room")
     @JsonIgnoreProperties(value = "room")
     private Set<Booking> bookings;
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "number=" + number +
+                ", floor=" + floor +
+                ", capacity=" + capacity +
+                ", type=" + type +
+                ", price=" + price +
+                '}';
+    }
 }

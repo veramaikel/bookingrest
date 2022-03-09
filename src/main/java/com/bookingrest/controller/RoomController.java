@@ -54,7 +54,7 @@ public class RoomController {
     }
 
     @GetMapping("{number}")
-    public Room getRoomByNumber(@PathVariable int number){ return service.findRoomByNumber(number); }
+    public Room getRoomByNumber(@PathVariable int number){ return service.findByRoomNumber(number); }
 
     @GetMapping("floor/{floor}")
     public List<Room> getRoomsByFloor(@PathVariable int floor, Pageable pageable){
