@@ -43,7 +43,7 @@ public interface RoomRepository extends PagingAndSortingRepository<Room, Integer
     Page<Room> findAllBookedRoomsByRange(Date min, Date max, Pageable pageable);
     */
     @Query("select r from Room r join r.bookings b"
-            +" where ( b.checkin <= ?1 and b.checkin <= ?2 ) or "
+            +" where ( b.checkin >= ?1 and b.checkin <= ?2 ) or "
             +" ( b.checkin < ?1 and ( b.checkout = null or b.checkout <= ?2 ) )")
     Page<Room> findAllBookedRoomsByRange(Date min, Date max, Pageable pageable);
 

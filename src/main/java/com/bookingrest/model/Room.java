@@ -34,7 +34,7 @@ public class Room implements Serializable {
     @Column(precision = 6, scale = 2, nullable = false)
     private BigDecimal price = new BigDecimal(0);
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
     @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 

@@ -90,8 +90,8 @@ public class BookingController {
     @DeleteMapping("{id}")
     public boolean deleteBookingById(@PathVariable int id){ return service.deleteBooking(id); }
 
-    @ExceptionHandler(value = InvalidBookingException.class)
-    public ResponseEntity handleInvalidBookingException(InvalidBookingException ex) {
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity handleException(Exception ex) {
         return new ResponseEntity(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }

@@ -27,7 +27,7 @@ public class Country implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy="country")
+    @OneToMany(mappedBy="country", cascade = {CascadeType.ALL})
     @JsonIgnore
     private Set<Guest> guests = new HashSet<>();
 

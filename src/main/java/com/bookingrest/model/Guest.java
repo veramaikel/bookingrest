@@ -23,12 +23,12 @@ public class Guest implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name="country_id", nullable=false)
     @JsonIgnoreProperties(value = "guests")
     private Country country;
 
-    @OneToMany(mappedBy = "guest")
+    @OneToMany(mappedBy = "guest", cascade = {CascadeType.ALL})
     @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 
