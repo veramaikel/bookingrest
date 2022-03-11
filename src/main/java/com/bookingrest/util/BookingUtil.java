@@ -26,4 +26,8 @@ public final class BookingUtil {
 
         return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort().and(defaultSort));
     }
+
+    public static Pageable getPageable(int page, int size){
+        return PageRequest.of(page, size);
+    }
 }

@@ -1,9 +1,12 @@
 package com.bookingrest.controller;
 
+import com.bookingrest.exception.InvalidBookingException;
 import com.bookingrest.model.Booking;
 import com.bookingrest.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -23,6 +26,11 @@ public class BookingController {
     @GetMapping("all")
     public List<Booking> getBookings(Pageable pageable){
         return service.findAllBookings(pageable);
+    }
+
+    @GetMapping("all/open")
+    public List<Booking> getOpenBookings(Pageable pageable){
+        return service.findAllOpenBookings(pageable);
     }
 
     @GetMapping("all/{date}")
@@ -63,15 +71,27 @@ public class BookingController {
     @GetMapping("{id}")
     public Booking getBookingById(@PathVariable int id){ return service.findByBookingId(id); }
 
-    @PutMapping(consumes = {"application/xml","application/json"})
-    public Booking insertBooking(@RequestBody Booking booking){
+    @GetMapping("unique/{checkin}/{guestid}/{roomnumber}")
+    public Booking getBookingByCheckinAndGuestAndRoom(
+            @PathVariable Date date, @PathVariable int guestid, @PathVariable int roomnumber){
+        return service.findByBookingCheckinAndGuestAndRoom(date, guestid, roomnumber);
+    }
+
+    @PutMapping(consumes = {"application/json", "application/xml"})
+    public Booking insertBooking(@RequestBody Booking booking) throws Exception {
         return service.saveBooking(booking);
     }
 
     @PostMapping(consumes = {"application/xml","application/json"})
-    public Booking updateBooking(@RequestBody Booking booking){ return service.updateBooking(booking); }
+    public Booking updateBooking(@RequestBody Booking booking) throws Exception {
+        return service.updateBooking(booking);
+    }
 
     @DeleteMapping("{id}")
     public boolean deleteBookingById(@PathVariable int id){ return service.deleteBooking(id); }
 
+    @ExceptionHandler(value = InvalidBookingException.class)
+    public ResponseEntity handleInvalidBookingException(InvalidBookingException ex) {
+        return new ResponseEntity(ex.getMessage(), HttpStatus.CONFLICT);
+    }
 }

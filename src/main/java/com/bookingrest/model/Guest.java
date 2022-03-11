@@ -1,13 +1,11 @@
 package com.bookingrest.model;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="Guest")
@@ -25,14 +23,31 @@ public class Guest implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="country_id", nullable=false)
-    @JsonIgnoreProperties(value = {"guests", "id"})
+    @JsonIgnoreProperties(value = "guests")
     private Country country;
 
     @OneToMany(mappedBy = "guest")
-    @JsonIgnoreProperties(value = "guest")
-    private Set<Booking> bookings;
+    @JsonIgnore
+    private Set<Booking> bookings = new HashSet<>();
+
+    public void addBooking(Booking booking){
+        bookings.add(booking);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Guest)) return false;
+        Guest guest = (Guest) o;
+        return id.equals(guest.id) && name.equals(guest.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, country);
+    }
 
     @Override
     public String toString() {

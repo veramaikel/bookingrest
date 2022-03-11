@@ -44,6 +44,12 @@ public class GuestService {
         return repository.findAllHaveBooked(BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
+    public List<Guest> findAllGuestsHaveBookedToday(Pageable pageable){
+        Date date = new Date(System.currentTimeMillis());
+        return repository.findAllHaveBookedByRange(date, date,
+                BookingUtil.getPageable(pageable, defaultSort)).getContent();
+    }
+
     public List<Guest> findAllGuestsHaveBookedByDate(Date date, Pageable pageable){
         return repository.findAllHaveBookedByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
@@ -74,11 +80,13 @@ public class GuestService {
     }
 
     private Guest setPersistent(Guest guest){
+
         Country country = guest.getCountry();
-        if(country.getId()!=null) {
-            country = service.findByCountryId(country.getId());
-            guest.setCountry(country);
-        }
+        //System.out.println("before :" +country);
+        if(country.getId()!=null) country = service.findByCountryId(country.getId());
+        else country.addGuest(guest);
+        //System.out.println("after :" +country);
+        guest.setCountry(country);
         return guest;
     }
 

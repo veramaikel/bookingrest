@@ -1,13 +1,13 @@
 package com.bookingrest.model;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -32,11 +32,28 @@ public class Room implements Serializable {
     private RoomType type;
 
     @Column(precision = 6, scale = 2, nullable = false)
-    private BigDecimal price;
+    private BigDecimal price = new BigDecimal(0);
 
     @OneToMany(mappedBy = "room")
-    @JsonIgnoreProperties(value = "room")
-    private Set<Booking> bookings;
+    @JsonIgnore
+    private Set<Booking> bookings = new HashSet<>();
+
+    public void addBooking(Booking booking){
+        bookings.add(booking);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room)) return false;
+        Room room = (Room) o;
+        return number.equals(room.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, floor, capacity, type);
+    }
 
     @Override
     public String toString() {

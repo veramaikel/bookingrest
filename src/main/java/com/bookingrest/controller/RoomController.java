@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class RoomController {
         return service.findAllBookedRooms(pageable);
     }
 
+    @GetMapping("all/booked/today")
+    public List<Room> getAllBookedRoomsToday(Pageable pageable){
+        return service.findAllBookedRoomsToday(pageable);
+    }
+
     @GetMapping("all/booked/{date}")
     public List<Room> getBookedRoomsByDate(@PathVariable Date date, Pageable pageable){
         return service.findAllBookedRoomsByDate(date, pageable);
@@ -41,7 +47,7 @@ public class RoomController {
     }
 
     @GetMapping("all/free")
-    public List<Room> getFreeRooms(Pageable pageable){ return service.findAllFreeRooms(pageable); }
+    public List<Room> getFreeRooms(Pageable pageable){ return service.findAllFreeRoomsToday(pageable); }
 
     @GetMapping("all/free/{date}")
     public List<Room> getFreeRoomsByDate(@PathVariable Date date, Pageable pageable){
@@ -53,8 +59,21 @@ public class RoomController {
         return service.findAllFreeRoomsByRange(date1, date2, pageable);
     }
 
-    @GetMapping("{number}")
-    public Room getRoomByNumber(@PathVariable int number){ return service.findByRoomNumber(number); }
+    @GetMapping("all/free/cheapest")
+    public List<Room> getCheapestFreeRoomsToday(Pageable pageable){
+        return service.findAllCheapestFreeRoomsToday(pageable);
+    }
+
+    @GetMapping("all/free/cheapest/{date}")
+    public List<Room> getCheapestFreeRoomsByDate(@PathVariable Date date, Pageable pageable){
+        return service.findAllCheapestFreeRoomsByDate(date, pageable);
+    }
+
+    @GetMapping("all/free/cheapest/{date1}/{date2}")
+    public List<Room> getCheapestFreeRoomsByRange(@PathVariable Date date1, @PathVariable Date date2,
+                                                  Pageable pageable){
+        return service.findAllCheapestFreeRoomsByRange(date1, date2, pageable);
+    }
 
     @GetMapping("floor/{floor}")
     public List<Room> getRoomsByFloor(@PathVariable int floor, Pageable pageable){
@@ -66,10 +85,18 @@ public class RoomController {
         return service.findAllRoomsByCapacity(capacity, pageable);
     }
 
+    @GetMapping("price/{price}")
+    public List<Room> getRoomsByPrice(@PathVariable BigDecimal price, Pageable pageable){
+        return service.findAllRoomsByPrice(price, pageable);
+    }
+
     @GetMapping("type/{id}")
     public List<Room> getRoomsByType(@PathVariable int id, Pageable pageable){
         return service.findAllRoomsByType(id, pageable);
     }
+
+    @GetMapping("{number}")
+    public Room getRoomByNumber(@PathVariable int number){ return service.findByRoomNumber(number); }
 
     @PutMapping(consumes = {"application/xml","application/json"})
     public Room insertRoom(@RequestBody Room room){

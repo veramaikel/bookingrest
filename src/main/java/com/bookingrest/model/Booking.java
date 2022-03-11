@@ -3,9 +3,8 @@ package com.bookingrest.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -31,12 +30,14 @@ public class Booking implements Serializable {
     private Integer id;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Future
     private Date checkin;
 
     @Column
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Future
     private Date checkout;
 
@@ -44,12 +45,12 @@ public class Booking implements Serializable {
     @Min(value = 1)
     private int people;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="guest_id", nullable=false)
-    @JsonIgnoreProperties(value = {"bookings", "id"})
+    @JsonIgnoreProperties(value = "bookings")
     private Guest guest;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="room_number", nullable=false)
     @JsonIgnoreProperties(value = "bookings")
     private Room room;

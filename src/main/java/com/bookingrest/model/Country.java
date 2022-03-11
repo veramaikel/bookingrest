@@ -3,12 +3,12 @@ package com.bookingrest.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -29,7 +29,24 @@ public class Country implements Serializable {
 
     @OneToMany(mappedBy="country")
     @JsonIgnore
-    private Set<Guest> guests;
+    private Set<Guest> guests = new HashSet<>();
+
+    public void addGuest(Guest guest){
+        guests.add(guest);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Country)) return false;
+        Country country = (Country) o;
+        return id.equals(country.id) && name.equals(country.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
 
     @Override
     public String toString() {

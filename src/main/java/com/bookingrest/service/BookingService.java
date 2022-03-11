@@ -1,5 +1,6 @@
 package com.bookingrest.service;
 
+import com.bookingrest.exception.InvalidBookingException;
 import com.bookingrest.model.Booking;
 import com.bookingrest.model.Guest;
 import com.bookingrest.model.Room;
@@ -32,6 +33,10 @@ public class BookingService {
 
     public List<Booking> findAllBookings(Pageable pageable){
         return repository.findAll(BookingUtil.getPageable(pageable, defaultSort)).getContent();
+    }
+
+    public List<Booking> findAllOpenBookings(Pageable pageable){
+        return repository.findAllOpen(BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Booking> findAllBookingsByCheckin(Date date, Pageable pageable){
@@ -70,26 +75,43 @@ public class BookingService {
         return repository.findById(id);
     }
 
+    public Booking findByBookingCheckinAndGuestAndRoom(Date date, int guestId, int roomNumber){
+        return repository.findByCheckinAndGuestAndRoom(date,
+                guestServ.findByGuestId(guestId), roomServ.findByRoomNumber(roomNumber));
+    }
+
     @Transactional
-    public Booking saveBooking(Booking booking){
+    public Booking saveBooking(Booking booking) throws InvalidBookingException {
         return repository.save(setPersistent(booking));
     }
 
     @Transactional
-    public Booking updateBooking(Booking booking){
+    public Booking updateBooking(Booking booking) throws InvalidBookingException {
         return repository.save(setPersistent(booking));
     }
 
-    private Booking setPersistent(Booking booking){
+    private Booking setPersistent(Booking booking) throws InvalidBookingException {
+        //System.out.println("before :" +booking);
         Room room = booking.getRoom();
-        if(room.getNumber()!=null) {
-            room = roomServ.findByRoomNumber(room.getNumber());
-            booking.setRoom(room);
-        }
+        if(room.getNumber()!=null) room = roomServ.findByRoomNumber(room.getNumber());
+        else room.addBooking(booking);
+        booking.setRoom(room);
+        //System.out.println("after room :" +booking);
+
         Guest guest = booking.getGuest();
-        if(guest.getId()!=null) {
-            guest = guestServ.findByGuestId(guest.getId());
-            booking.setGuest(guest);
+        if(guest.getId()!=null) guest = guestServ.findByGuestId(guest.getId());
+        else {
+            guest = guestServ.saveGuest(guest);
+        }
+        booking.setGuest(guest);
+
+        List<Booking> list = findAllOpenBookings(BookingUtil.getPageable(0,100));
+        for (Booking book: list){
+            if(booking.getRoom().equals(book.getRoom()) &&
+                    (booking.getCheckout()==null || booking.getCheckout().after(book.getCheckin())) ){
+                throw new InvalidBookingException(
+                        "The booking cannot be processed because there is already an open one:"+book);
+            }
         }
 
         return booking;

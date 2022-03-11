@@ -25,9 +25,14 @@ public class GuestController {
         return service.findAllGuests(pageable);
     }
 
-    @GetMapping("all/booked")
+    @GetMapping("all/booked/total")
     public List<Guest> getGuestsHaveBooked(Pageable pageable){
         return service.findAllGuestsHaveBooked(pageable);
+    }
+
+    @GetMapping("all/booked")
+    public List<Guest> getGuestsHaveBookedToday(Pageable pageable){
+        return service.findAllGuestsHaveBookedToday(pageable);
     }
 
     @GetMapping("all/booked/{date}")

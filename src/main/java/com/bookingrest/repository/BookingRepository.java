@@ -26,9 +26,14 @@ public interface BookingRepository extends PagingAndSortingRepository<Booking, I
 
     Page<Booking> findAllByRoom(Room room, Pageable pageable);
 
-    @Query("select b from Booking b where (b.checkin >= ?1 and b.checkin <= ?2) or "
+    @Query("from Booking b where b.checkout is null ")
+    Page<Booking> findAllOpen(Pageable pageable);
+
+    @Query("from Booking b where (b.checkin >= ?1 and b.checkin <= ?2) or "
             +" (b.checkin < ?1 and (b.checkout = null or b.checkout <= ?2))")
     Page<Booking> findAllByRange(Date min, Date max, Pageable pageable);
 
     Booking findById(int id);
+
+    Booking findByCheckinAndGuestAndRoom(Date checkid, Guest guest, Room room);
 }
