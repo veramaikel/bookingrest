@@ -1,2 +1,2 @@
-# bookingrest
-Booking Rest Project 1
+# BookingREST
+Rest API for the back-end of a booking system for a hotel.
