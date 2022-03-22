@@ -1,6 +1,5 @@
 package com.bookingrest.controller;
 
-import com.bookingrest.exception.InvalidBookingException;
 import com.bookingrest.model.Booking;
 import com.bookingrest.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,22 +33,22 @@ public class BookingController {
     }
 
     @GetMapping("all/{date}")
-    public List<Booking> getBookingsByDate(@PathVariable Date date, Pageable pageable){
+    public List<Booking> getBookingsByDate(@PathVariable LocalDate date, Pageable pageable){
         return service.findAllBookingsByDate(date, pageable);
     }
 
     @GetMapping("all/{date1}/{date2}")
-    public List<Booking> getBookingsByRange(@PathVariable Date date1, @PathVariable Date date2, Pageable pageable){
+    public List<Booking> getBookingsByRange(@PathVariable LocalDate date1, @PathVariable LocalDate date2, Pageable pageable){
         return service.findAllBookingsByRange(date1, date2, pageable);
     }
 
     @GetMapping("checkin/{date}")
-    public List<Booking> getBookingsByCheckin(@PathVariable Date date, Pageable pageable){
+    public List<Booking> getBookingsByCheckin(@PathVariable LocalDate date, Pageable pageable){
         return service.findAllBookingsByCheckin(date, pageable);
     }
 
     @GetMapping("checkout/{date}")
-    public List<Booking> getBookingsByCheckout(@PathVariable Date date, Pageable pageable){
+    public List<Booking> getBookingsByCheckout(@PathVariable LocalDate date, Pageable pageable){
         return service.findAllBookingsByCheckout(date, pageable);
     }
 
@@ -73,7 +72,7 @@ public class BookingController {
 
     @GetMapping("unique/{checkin}/{guestid}/{roomnumber}")
     public Booking getBookingByCheckinAndGuestAndRoom(
-            @PathVariable Date date, @PathVariable int guestid, @PathVariable int roomnumber){
+            @PathVariable LocalDate date, @PathVariable int guestid, @PathVariable int roomnumber){
         return service.findByBookingCheckinAndGuestAndRoom(date, guestid, roomnumber);
     }
 
@@ -91,7 +90,7 @@ public class BookingController {
     public boolean deleteBookingById(@PathVariable int id){ return service.deleteBooking(id); }
 
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity handleException(Exception ex) {
-        return new ResponseEntity(ex.getMessage(), HttpStatus.CONFLICT);
+    public ResponseEntity<String> handleException(Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }

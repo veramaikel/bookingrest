@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Repository
@@ -29,13 +30,13 @@ public interface RoomRepository extends PagingAndSortingRepository<Room, Integer
     @Query("select r from Room r where r not in ( " +
             " select b.room from Booking b where ( b.checkin >= ?1 and b.checkin <= ?2 ) or "
             +" ( b.checkin < ?1 and ( b.checkout = null or b.checkout <= ?2 ) ) )")
-    Page<Room> findAllFreeRoomsByRange(Date min, Date max, Pageable pageable);
+    Page<Room> findAllFreeRoomsByRange(LocalDate min, LocalDate max, Pageable pageable);
 
     @Query("select r from Room r where r not in ( " +
             " select b.room from Booking b where ( b.checkin >= ?1 and b.checkin <= ?2 ) or " +
             " ( b.checkin < ?1 and ( b.checkout = null or b.checkout <= ?2 ) ) ) and " +
             " r.price = ( select MIN(price) from Room )")
-    Page<Room> findAllCheapestFreeRoomsByRange(Date min, Date max, Pageable pageable);
+    Page<Room> findAllCheapestFreeRoomsByRange(LocalDate min, LocalDate max, Pageable pageable);
 
     /*@Query("select r from Room r join r.bookings b"
             +" where ( b.checkin >= ?1 and b.checkin <= ?2 ) or "
@@ -45,7 +46,7 @@ public interface RoomRepository extends PagingAndSortingRepository<Room, Integer
     @Query("select r from Room r join r.bookings b"
             +" where ( b.checkin >= ?1 and b.checkin <= ?2 ) or "
             +" ( b.checkin < ?1 and ( b.checkout = null or b.checkout <= ?2 ) )")
-    Page<Room> findAllBookedRoomsByRange(Date min, Date max, Pageable pageable);
+    Page<Room> findAllBookedRoomsByRange(LocalDate min, LocalDate max, Pageable pageable);
 
     @Query("select r from Room r join r.bookings b")
     Page<Room> findAllBookedRooms(Pageable pageable);

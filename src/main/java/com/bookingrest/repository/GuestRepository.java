@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Repository
 public interface GuestRepository extends PagingAndSortingRepository<Guest, Integer> {
@@ -22,7 +22,7 @@ public interface GuestRepository extends PagingAndSortingRepository<Guest, Integ
     @Query("select g from Guest g join g.bookings b"
             +" where (b.checkin >= ?1 and b.checkin <= ?2) or "
             +" (b.checkin < ?1 and (b.checkout = null or b.checkout <= ?2))")
-    Page<Guest> findAllHaveBookedByRange(Date min, Date max, Pageable pageable);
+    Page<Guest> findAllHaveBookedByRange(LocalDate min, LocalDate max, Pageable pageable);
 
     @Query("select g from Guest g join g.bookings b")
     Page<Guest> findAllHaveBooked(Pageable pageable);

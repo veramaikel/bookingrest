@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,13 +36,13 @@ public class GuestController {
     }
 
     @GetMapping("all/booked/{date}")
-    public List<Guest> getGuestsHaveBookedByDate(@PathVariable Date date, Pageable pageable){
+    public List<Guest> getGuestsHaveBookedByDate(@PathVariable LocalDate date, Pageable pageable){
         return service.findAllGuestsHaveBookedByDate(date, pageable);
     }
 
     @GetMapping("all/booked/{date1}/{date2}")
-    public List<Guest> getGuestsHaveBookedByRange(@PathVariable Date date1,
-                                                        @PathVariable Date date2, Pageable pageable){
+    public List<Guest> getGuestsHaveBookedByRange(@PathVariable LocalDate date1,
+                                                        @PathVariable LocalDate date2, Pageable pageable){
         return service.findAllGuestsHaveBookedByRange(date1, date2, pageable);
     }
 

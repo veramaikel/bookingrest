@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -37,12 +37,14 @@ public class RoomController {
     }
 
     @GetMapping("all/booked/{date}")
-    public List<Room> getBookedRoomsByDate(@PathVariable Date date, Pageable pageable){
+    public List<Room> getBookedRoomsByDate(@PathVariable LocalDate date, Pageable pageable){
         return service.findAllBookedRoomsByDate(date, pageable);
     }
 
     @GetMapping("all/booked/{date1}/{date2}")
-    public List<Room> getBookedRoomsByRange(@PathVariable Date date1, @PathVariable Date date2, Pageable pageable){
+    public List<Room> getBookedRoomsByRange(@PathVariable LocalDate date1,
+                                            @PathVariable LocalDate date2,
+                                            Pageable pageable){
         return service.findAllBookedRoomsByRange(date1, date2, pageable);
     }
 
@@ -50,12 +52,14 @@ public class RoomController {
     public List<Room> getFreeRooms(Pageable pageable){ return service.findAllFreeRoomsToday(pageable); }
 
     @GetMapping("all/free/{date}")
-    public List<Room> getFreeRoomsByDate(@PathVariable Date date, Pageable pageable){
+    public List<Room> getFreeRoomsByDate(@PathVariable LocalDate date, Pageable pageable){
         return service.findAllFreeRoomsByDate(date, pageable);
     }
 
     @GetMapping("all/free/{date1}/{date2}")
-    public List<Room> getFreeRoomsByRange(@PathVariable Date date1, @PathVariable Date date2, Pageable pageable){
+    public List<Room> getFreeRoomsByRange(@PathVariable LocalDate date1,
+                                          @PathVariable LocalDate date2,
+                                          Pageable pageable){
         return service.findAllFreeRoomsByRange(date1, date2, pageable);
     }
 
@@ -65,12 +69,12 @@ public class RoomController {
     }
 
     @GetMapping("all/free/cheapest/{date}")
-    public List<Room> getCheapestFreeRoomsByDate(@PathVariable Date date, Pageable pageable){
+    public List<Room> getCheapestFreeRoomsByDate(@PathVariable LocalDate date, Pageable pageable){
         return service.findAllCheapestFreeRoomsByDate(date, pageable);
     }
 
     @GetMapping("all/free/cheapest/{date1}/{date2}")
-    public List<Room> getCheapestFreeRoomsByRange(@PathVariable Date date1, @PathVariable Date date2,
+    public List<Room> getCheapestFreeRoomsByRange(@PathVariable LocalDate date1, @PathVariable LocalDate date2,
                                                   Pageable pageable){
         return service.findAllCheapestFreeRoomsByRange(date1, date2, pageable);
     }

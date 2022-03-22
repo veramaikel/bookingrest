@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class ValidBookingValidator
         implements ConstraintValidator<ValidBooking, Booking> {
@@ -19,11 +19,6 @@ public class ValidBookingValidator
             return true;
         }
 
-        if (!(booking instanceof Booking)) {
-            throw new IllegalArgumentException("Illegal method signature, "
-                    + "expected parameter of type Booking.");
-        }
-
         if (booking.getCheckin() == null
                 || booking.getGuest() == null
                 || booking.getRoom() == null) {
@@ -34,7 +29,7 @@ public class ValidBookingValidator
             throw new InvalidBookingException("The number of people must be between 1 and the capacity of the room");
         }
 
-        return (booking.getCheckin().after(new Date()) &&
-                (booking.getCheckout() == null || booking.getCheckout().after(booking.getCheckin())));
+        return (booking.getCheckin().isAfter(LocalDate.now()) &&
+                (booking.getCheckout() == null || booking.getCheckout().isAfter(booking.getCheckin())));
     }
 }

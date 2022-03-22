@@ -1,5 +1,6 @@
 package com.bookingrest.model;
 
+import com.bookingrest.util.BookingUtil;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -11,7 +12,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="Booking",
@@ -33,24 +34,24 @@ public class Booking implements Serializable {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Future
-    private Date checkin;
+    private LocalDate checkin;
 
     @Column
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Future
-    private Date checkout;
+    private LocalDate checkout;
 
     @Column(nullable = false)
     @Min(value = 1)
     private int people;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(name="guest_id", nullable=false)
     @JsonIgnoreProperties(value = "bookings")
     private Guest guest;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(name="room_number", nullable=false)
     @JsonIgnoreProperties(value = "bookings")
     private Room room;
@@ -68,7 +69,7 @@ public class Booking implements Serializable {
         if (checkin == null || checkout == null) {
             return 0;
         } else {
-            return (int) ((checkout.getTime() - checkin.getTime()) / 1000 / 60 / 60 / 24);
+            return (int) ((BookingUtil.subtractDates(checkout, checkin)) / 1000 / 60 / 60 / 24);
         }
     }
 

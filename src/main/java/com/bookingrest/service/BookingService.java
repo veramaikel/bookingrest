@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -39,11 +40,11 @@ public class BookingService {
         return repository.findAllOpen(BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Booking> findAllBookingsByCheckin(Date date, Pageable pageable){
+    public List<Booking> findAllBookingsByCheckin(LocalDate date, Pageable pageable){
         return repository.findAllByCheckin(date, BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Booking> findAllBookingsByCheckout(Date date, Pageable pageable){
+    public List<Booking> findAllBookingsByCheckout(LocalDate date, Pageable pageable){
         return repository.findAllByCheckout(date, BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
@@ -61,12 +62,12 @@ public class BookingService {
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Booking> findAllBookingsByDate(Date date, Pageable pageable){
+    public List<Booking> findAllBookingsByDate(LocalDate date, Pageable pageable){
         return repository.findAllByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Booking> findAllBookingsByRange(Date date1, Date date2, Pageable pageable){
+    public List<Booking> findAllBookingsByRange(LocalDate date1, LocalDate date2, Pageable pageable){
         return repository.findAllByRange(BookingUtil.newer(date1, date2), BookingUtil.newer(date1, date2),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
@@ -75,7 +76,7 @@ public class BookingService {
         return repository.findById(id);
     }
 
-    public Booking findByBookingCheckinAndGuestAndRoom(Date date, int guestId, int roomNumber){
+    public Booking findByBookingCheckinAndGuestAndRoom(LocalDate date, int guestId, int roomNumber){
         return repository.findByCheckinAndGuestAndRoom(date,
                 guestServ.findByGuestId(guestId), roomServ.findByRoomNumber(roomNumber));
     }
@@ -108,7 +109,7 @@ public class BookingService {
         List<Booking> list = findAllOpenBookings(BookingUtil.getPageable(0,100));
         for (Booking book: list){
             if(booking.getRoom().equals(book.getRoom()) &&
-                    (booking.getCheckout()==null || booking.getCheckout().after(book.getCheckin())) ){
+                    (booking.getCheckout()==null || booking.getCheckout().isAfter(book.getCheckin())) ){
                 throw new InvalidBookingException(
                         "The booking cannot be processed because there is already an open one:"+book);
             }

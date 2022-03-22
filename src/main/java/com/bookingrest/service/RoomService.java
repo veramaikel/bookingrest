@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -54,51 +54,51 @@ public class RoomService {
     }
 
     public List<Room> findAllBookedRoomsToday(Pageable pageable){
-        Date date = new Date(System.currentTimeMillis());
+        LocalDate date = LocalDate.now();
         return repository.findAllBookedRoomsByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Room> findAllBookedRoomsByDate(Date date, Pageable pageable){
+    public List<Room> findAllBookedRoomsByDate(LocalDate date, Pageable pageable){
         return repository.findAllBookedRoomsByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Room> findAllBookedRoomsByRange(Date date1, Date date2, Pageable pageable){
+    public List<Room> findAllBookedRoomsByRange(LocalDate date1, LocalDate date2, Pageable pageable){
         return repository.findAllBookedRoomsByRange(
                 BookingUtil.newer(date1, date2), BookingUtil.older(date1, date2),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Room> findAllFreeRoomsToday(Pageable pageable){
-        Date date = new Date(System.currentTimeMillis());
+        LocalDate date = LocalDate.now();
         return repository.findAllFreeRoomsByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Room> findAllFreeRoomsByDate(Date date, Pageable pageable){
+    public List<Room> findAllFreeRoomsByDate(LocalDate date, Pageable pageable){
         return repository.findAllFreeRoomsByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Room> findAllFreeRoomsByRange(Date date1, Date date2, Pageable pageable){
+    public List<Room> findAllFreeRoomsByRange(LocalDate date1, LocalDate date2, Pageable pageable){
         return repository.findAllFreeRoomsByRange(
                 BookingUtil.newer(date1, date2), BookingUtil.older(date1, date2),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
     public List<Room> findAllCheapestFreeRoomsToday(Pageable pageable){
-        Date date = new Date(System.currentTimeMillis());
+        LocalDate date = LocalDate.now();
         return repository.findAllCheapestFreeRoomsByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Room> findAllCheapestFreeRoomsByDate(Date date, Pageable pageable){
+    public List<Room> findAllCheapestFreeRoomsByDate(LocalDate date, Pageable pageable){
         return repository.findAllCheapestFreeRoomsByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Room> findAllCheapestFreeRoomsByRange(Date date1, Date date2, Pageable pageable){
+    public List<Room> findAllCheapestFreeRoomsByRange(LocalDate date1, LocalDate date2, Pageable pageable){
         return repository.findAllCheapestFreeRoomsByRange(
                 BookingUtil.newer(date1, date2), BookingUtil.older(date1, date2),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();

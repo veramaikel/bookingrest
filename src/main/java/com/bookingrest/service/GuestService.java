@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -45,17 +45,17 @@ public class GuestService {
     }
 
     public List<Guest> findAllGuestsHaveBookedToday(Pageable pageable){
-        Date date = new Date(System.currentTimeMillis());
+        LocalDate date = LocalDate.now();
         return repository.findAllHaveBookedByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Guest> findAllGuestsHaveBookedByDate(Date date, Pageable pageable){
+    public List<Guest> findAllGuestsHaveBookedByDate(LocalDate date, Pageable pageable){
         return repository.findAllHaveBookedByRange(date, date,
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
     }
 
-    public List<Guest> findAllGuestsHaveBookedByRange(Date date1, Date date2, Pageable pageable){
+    public List<Guest> findAllGuestsHaveBookedByRange(LocalDate date1, LocalDate date2, Pageable pageable){
         return repository.findAllHaveBookedByRange(
                 BookingUtil.newer(date1, date2), BookingUtil.older(date1, date2),
                 BookingUtil.getPageable(pageable, defaultSort)).getContent();
